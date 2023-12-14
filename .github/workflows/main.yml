@@ -18,5 +18,12 @@ jobs:
       with:
         java-version: 14
 
-    - name: Build project with Maven
+    - name: Cache the Maven packages to speed up build
+      uses: action/cache@v1
+      with:
+         path: ~/.m2
+         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+         restore-keys: ${{ runner.os }}-m2
+    
+    - name: Build and test project with Maven
       run: mvn -B package --file pom.xml
